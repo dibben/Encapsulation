@@ -57,6 +57,7 @@ namespace Encapsulation
 				SettingsPage(QSharedPointer<Settings> &settings);
 
 				virtual QWidget *createPage(QWidget *parent);
+				virtual QWidget *widget();
 				virtual void apply();
 				virtual void finish();
 				virtual bool matches(const QString &) const;

@@ -121,6 +121,11 @@ QWidget *SettingsPage::createPage(QWidget *parent)
 	return m_widget;
 }
 
+QWidget*SettingsPage::widget()
+{
+	return createPage(0);
+}
+
 void SettingsPage::apply()
 {
 	if(m_widget) {
