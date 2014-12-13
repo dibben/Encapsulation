@@ -18,7 +18,7 @@
 
 #include <cppeditor/cppeditorconstants.h>
 
-#include <cpptools/cppmodelmanagerinterface.h>
+#include <cpptools/cppmodelmanager.h>
 #include <cpptools/cpptoolsconstants.h>
 
 #include <cplusplus/Overview.h>
@@ -39,22 +39,22 @@ namespace Encapsulation
 namespace Internal
 {
 
-Plugin::Plugin():
+EncapsulationPlugin::EncapsulationPlugin():
 	m_settings(new Settings())
 {
 }
 
-Plugin::~Plugin()
+EncapsulationPlugin::~EncapsulationPlugin()
 {
 }
 
-bool Plugin::initialize(const QStringList &arguments, QString *errorString)
+bool EncapsulationPlugin::initialize(const QStringList &arguments, QString *errorString)
 {
 	Q_UNUSED(arguments)
 	Q_UNUSED(errorString)
 	Core::ActionManager *am = Core::ActionManager::instance();
 
-    Core::Context context(CppEditor::Constants::C_CPPEDITOR);
+	Core::Context context(CppEditor::Constants::CPPEDITOR_ID);
 
 	QAction *action = new QAction(tr("Encapsulate"), this);
     Core::Command *cmd = am->registerAction(action, Constants::ACTION_ID, context);
@@ -68,12 +68,12 @@ bool Plugin::initialize(const QStringList &arguments, QString *errorString)
 	return true;
 }
 
-void Plugin::extensionsInitialized()
+void EncapsulationPlugin::extensionsInitialized()
 {
 	m_settings->fromSettings(Core::ICore::settings());
 }
 
-ExtensionSystem::IPlugin::ShutdownFlag Plugin::aboutToShutdown()
+ExtensionSystem::IPlugin::ShutdownFlag EncapsulationPlugin::aboutToShutdown()
 {
 	return SynchronousShutdown;
 }
@@ -86,8 +86,8 @@ CPlusPlus::Symbol* currentSymbol(Core::IEditor *editor)
     int line = editor->currentLine();
     int column = editor->currentColumn();
 
-    CppTools::CppModelManagerInterface *modelManager
-            = CppTools::CppModelManagerInterface::instance();
+	CppTools::CppModelManager *modelManager
+			= CppTools::CppModelManager::instance();
 
     if (!modelManager) {
         QMessageBox::information(0, QString::fromLatin1("Error"), QString::fromLatin1("Model manager is null"));
@@ -134,7 +134,7 @@ void switchToHeader(Core::IEditor *editor)
     }
 }
 
-void Plugin::triggerAction()
+void EncapsulationPlugin::triggerAction()
 {
 	Core::IEditor* editor = Core::EditorManager::currentEditor();
 
@@ -245,7 +245,7 @@ void Plugin::triggerAction()
                 set += QString::fromLatin1(" { ") + var_name + QString::fromLatin1(" = ") + localName + QString::fromLatin1("; }");
 			}
 
-			TextEditor::BaseTextEditorWidget *editorWidget = qobject_cast<TextEditor::BaseTextEditorWidget*>(editor->widget());
+			TextEditor::TextEditorWidget *editorWidget = qobject_cast<TextEditor::TextEditorWidget*>(editor->widget());
 			if(editorWidget) {
 				QTextCursor cur = editorWidget->textCursor();
 
@@ -273,13 +273,13 @@ void Plugin::triggerAction()
             if (cpp_file) {
                 switchToSource(editor);
 
-				editorWidget = qobject_cast<TextEditor::BaseTextEditorWidget*>(Core::EditorManager::currentEditor()->widget());
+				editorWidget = qobject_cast<TextEditor::TextEditorWidget*>(Core::EditorManager::currentEditor()->widget());
                 if(editorWidget) {
 
                     editorWidget->moveCursor(QTextCursor::End);
-                    editorWidget->find(QString::fromAscii("}"), QTextDocument::FindBackward);
+					editorWidget->find(QString::fromLatin1("}"), QTextDocument::FindBackward);
                     editorWidget->moveCursor(QTextCursor::EndOfLine);
-                    editorWidget->insertPlainText(QString::fromAscii("\n"));
+					editorWidget->insertPlainText(QString::fromLatin1("\n"));
                     editorWidget->insertLineBelow();
 
 
@@ -309,7 +309,6 @@ void Plugin::triggerAction()
 
 }
 
-Q_EXPORT_PLUGIN2(Encapsulation, Plugin)
 
 }
 }

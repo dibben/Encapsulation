@@ -1,0 +1,15 @@
+{
+	\"Name\" : \"Encapsulation\",
+	\"Version\" : \"0.2\",
+	\"CompatVersion\" : \"$$QTCREATOR_COMPAT_VERSION\",
+	\"Vendor\" : \"arturo182\",
+	\"Copyright\" : \"(C) arturo182\",
+	\"License\" : [ \"GNU Lesser General Public License Usage\",
+					\"\",
+					\"This plugin may be used under the terms of the GNU Lesser General Public License version 2.1 as published by the Free Software Foundation.  Please review the following information to ensure the GNU Lesser General Public License version 2.1 requirements will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.\"
+	],
+	\"Category\" : \"Custom Plugins\",
+	\"Description\" : \"Enabled generation of get and set methods for private/protected class fields.\",
+	\"Url\" : \"http://www.arturpacholec.pl/\",
+	$$dependencyList
+}

@@ -13,13 +13,14 @@ namespace Encapsulation
 	{
 		struct Settings;
 
-		class Plugin : public ExtensionSystem::IPlugin
+		class EncapsulationPlugin : public ExtensionSystem::IPlugin
 		{
 				Q_OBJECT
-				Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin")
+				Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtCreatorPlugin" FILE "Encapsulation.json")
+
 			public:
-				Plugin();
-				~Plugin();
+				EncapsulationPlugin();
+				~EncapsulationPlugin();
 
 				bool initialize(const QStringList &arguments, QString *errorString);
 				void extensionsInitialized();
