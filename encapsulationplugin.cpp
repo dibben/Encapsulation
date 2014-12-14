@@ -14,6 +14,8 @@
 
 #include <cplusplus/Overview.h>
 #include <cpptools/cppmodelmanager.h>
+#include <cpptools/cpptoolsreuse.h>
+
 #include <extensionsystem/pluginmanager.h>
 
 #include <cppeditor/cppeditorconstants.h>
@@ -116,8 +118,8 @@ void switchToSource(Core::IEditor *editor)
     const QString typeName = mimeType.type();
     if (typeName == QLatin1String(CppTools::Constants::C_HEADER_MIMETYPE) ||
         typeName == QLatin1String(CppTools::Constants::CPP_HEADER_MIMETYPE)) {
-        am->command(CppTools::Constants::SWITCH_HEADER_SOURCE)->action()->trigger();
-    }
+		CppTools::switchHeaderSource();
+	}
 }
 
 void switchToHeader(Core::IEditor *editor)
@@ -130,7 +132,7 @@ void switchToHeader(Core::IEditor *editor)
     const QString typeName = mimeType.type();
     if (typeName == QLatin1String(CppTools::Constants::C_SOURCE_MIMETYPE) ||
         typeName == QLatin1String(CppTools::Constants::CPP_SOURCE_MIMETYPE)) {
-        am->command(CppTools::Constants::SWITCH_HEADER_SOURCE)->action()->trigger();
+		CppTools::switchHeaderSource();
     }
 }
 
