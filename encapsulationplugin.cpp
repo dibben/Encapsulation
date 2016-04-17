@@ -7,7 +7,6 @@
 #include <coreplugin/actionmanager/actionmanager.h>
 #include <coreplugin/editormanager/ieditor.h>
 #include <coreplugin/actionmanager/command.h>
-#include <coreplugin/variablemanager.h>
 #include <coreplugin/coreconstants.h>
 #include <coreplugin/icontext.h>
 #include <coreplugin/icore.h>
@@ -27,6 +26,9 @@
 #include <cplusplus/Scope.h>
 #include <cplusplus/Symbols.h>
 #include <cplusplus/Names.h>
+
+#include <utils/mimetypes/mimetype.h>
+#include <utils/mimetypes/mimedatabase.h>
 
 
 #include <QCoreApplication>
@@ -112,10 +114,11 @@ void switchToSource(Core::IEditor *editor)
     // Switch to source file
 	const Core::ActionManager *am = Core::ActionManager::instance();
 
-	QFileInfo fi(editor->document()->filePath());
+	QFileInfo fi(editor->document()->filePath().toString());
 
-	const Core::MimeType mimeType = Core::MimeDatabase::findByFile(fi);
-    const QString typeName = mimeType.type();
+	Utils::MimeDatabase mdb;
+	const Utils::MimeType mimeType = mdb.mimeTypeForFile(fi);
+	const QString typeName = mimeType.name();
     if (typeName == QLatin1String(CppTools::Constants::C_HEADER_MIMETYPE) ||
         typeName == QLatin1String(CppTools::Constants::CPP_HEADER_MIMETYPE)) {
 		CppTools::switchHeaderSource();
@@ -127,9 +130,10 @@ void switchToHeader(Core::IEditor *editor)
     // Switch to source file
 	const Core::ActionManager *am = Core::ActionManager::instance();
 
-	QFileInfo fi(editor->document()->filePath());
-	const Core::MimeType mimeType = Core::MimeDatabase::findByFile(fi);
-    const QString typeName = mimeType.type();
+	Utils::MimeDatabase mdb;
+	QFileInfo fi(editor->document()->filePath().toString());
+	const Utils::MimeType mimeType = mdb.mimeTypeForFile(fi);
+	const QString typeName = mimeType.name();
     if (typeName == QLatin1String(CppTools::Constants::C_SOURCE_MIMETYPE) ||
         typeName == QLatin1String(CppTools::Constants::CPP_SOURCE_MIMETYPE)) {
 		CppTools::switchHeaderSource();
